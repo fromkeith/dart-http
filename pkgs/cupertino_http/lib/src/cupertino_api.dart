@@ -31,6 +31,7 @@ import 'dart:ffi';
 import 'dart:isolate';
 import 'dart:math';
 import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:async/async.dart';
 import 'package:ffi/ffi.dart';
@@ -94,7 +95,7 @@ enum URLSessionResponseDisposition {
   urlSessionResponseCancel,
   urlSessionResponseAllow,
   urlSessionResponseBecomeDownload,
-  urlSessionResponseBecomeStream
+  urlSessionResponseBecomeStream,
 }
 
 /// Provides in indication to the operating system on what type of requests
@@ -857,6 +858,16 @@ class URLSessionTask extends _ObjectHolder<ncb.NSURLSessionTask> {
   String toString() => _toStringHelper('URLSessionTask');
 }
 
+/// A task associated with uploading a URI to a file.
+///
+/// See [NSURLSessionUploadTask](https://developer.apple.com/documentation/foundation/nsurlsessionuploadtask)
+class URLSessionUploadTask extends URLSessionTask {
+  URLSessionUploadTask._(ncb.NSURLSessionUploadTask super.c) : super._();
+
+  @override
+  String toString() => _toStringHelper('URLSessionUploadTask');
+}
+
 /// A task associated with downloading a URI to a file.
 ///
 /// See [NSURLSessionDownloadTask](https://developer.apple.com/documentation/foundation/nsurlsessiondownloadtask)
@@ -1138,7 +1149,7 @@ void _setupDelegation(
       onWebSocketTaskOpened,
   void Function(URLSession session, URLSessionWebSocketTask task, int closeCode,
           Data? reason)?
-      onWebSocketTaskClosed,
+      onWebSocketTaskClosed
 }) {
   final responsePort = ReceivePort();
   responsePort.listen((d) {
@@ -1465,7 +1476,8 @@ class URLSession extends _ObjectHolder<ncb.NSURLSession> {
         onFinishedDownloading: onFinishedDownloading,
         onComplete: onComplete,
         onWebSocketTaskOpened: onWebSocketTaskOpened,
-        onWebSocketTaskClosed: onWebSocketTaskClosed);
+        onWebSocketTaskClosed: onWebSocketTaskClosed,
+    );
   }
 
   /// A **copy** of the configuration for this session.
@@ -1557,6 +1569,46 @@ class URLSession extends _ObjectHolder<ncb.NSURLSession> {
         onResponse: _onResponse);
     return task;
   }
+
+  /// Creates a [URLSessionUploadTask] that uploads the file to a server
+  /// URL.
+  ///
+  /// Be sure the file exists in permanent storage and not temporary.
+  ///
+  /// On complete with be called when finished.
+  ///
+  /// See [NSURLSession uploadTaskWithRequest:fromFile:](https://developer.apple.com/documentation/foundation/nsurlsession/1411550-uploadtaskwithrequest)
+  URLSessionUploadTask uploadTaskWithRequest(URLRequest request, File source) {
+    final task = URLSessionUploadTask._(
+        _nsObject.uploadTaskWithRequest_fromFile_(request._nsObject, uriToNSURL(source.absolute.uri)));
+    _setupDelegation(_delegate, this, task,
+        onComplete: _onComplete,
+        onData: _onData,
+        onFinishedDownloading: _onFinishedDownloading,
+        onRedirect: _onRedirect,
+        onResponse: _onResponse,
+    );
+    return task;
+  }
+
+  /// Invalidates and cancels all tasks for this session.
+  ///
+  /// Breaks this session. You should create a new session after invalidating.
+  ///
+  /// See [NSURLSession invalidateAndCancel](https://developer.apple.com/documentation/foundation/nsurlsession/1411538-invalidateandcancel)
+  void invalidateAndCancel() {
+    _nsObject.invalidateAndCancel();
+  }
+
+  /// Invalidates the session, but lets existing tasks complete.
+  ///
+  /// Existing tasks will finish, but new ones cannot be added.
+  ///
+  /// See [NSURLSession finishTasksAndInvalidate](https://developer.apple.com/documentation/foundation/nsurlsession/1407428-finishtasksandinvalidate)
+  void finishTasksAndInvalidate() {
+    _nsObject.finishTasksAndInvalidate();
+  }
+
 
   /// Creates a [URLSessionWebSocketTask] that represents a connection to a
   /// WebSocket endpoint.
