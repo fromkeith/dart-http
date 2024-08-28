@@ -29,3 +29,5 @@ extern void CUPHTTPSendMessage(NSURLSessionWebSocketTask *task,
  */
 extern void CUPHTTPReceiveMessage(NSURLSessionWebSocketTask *task,
                                   Dart_Port sendPort);
+
+extern void CUPHTTPURLSessionGetAllTasks(NSURLSession *session, Dart_Port sendPort);

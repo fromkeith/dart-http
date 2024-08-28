@@ -43,3 +43,24 @@ void CUPHTTPReceiveMessage(NSURLSessionWebSocketTask *task,  Dart_Port sendPort)
     NSCAssert(success, @"Dart_PostCObject_DL failed.");
   }];
 }
+
+/*
+void getAllTasks(NSURLSession *session, Dart_Port sendPort) {
+    [session
+        getAllTasks: (completionHandler: ^([URLSessionTask] tasks) {
+    [error tasks];
+    Dart_CObject message_cobj = NSObjectToCObject(tasks);
+    const bool success = Dart_PostCObject_DL(sendPort, &message_cobj);
+    NSCAssert(success, @"Dart_PostCObject_DL failed.");
+  })];
+}
+*/
+void CUPHTTPURLSessionGetAllTasks(NSURLSession *session, Dart_Port sendPort) {
+    [session getAllTasksWithCompletionHandler:^(NSArray<NSURLSessionTask *> *tasks) {
+        [tasks retain];
+
+        Dart_CObject message_cobj = NSObjectToCObject(tasks);
+        const bool success = Dart_PostCObject_DL(sendPort, &message_cobj);
+        NSCAssert(success, @"Dart_PostCObject_DL failed.");
+    }];
+}

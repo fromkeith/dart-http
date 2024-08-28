@@ -62,4 +62,5 @@ typedef NS_ENUM(NSInteger, MessageType) {
  */
 - (void)registerTask:(NSURLSessionTask *)task
    withConfiguration:(CUPHTTPTaskConfiguration *)config;
+
 @end

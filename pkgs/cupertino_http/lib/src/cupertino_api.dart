@@ -702,6 +702,7 @@ class URLSessionWebSocketMessage
 class URLSessionTask extends _ObjectHolder<ncb.NSURLSessionTask> {
   URLSessionTask._(super.c);
 
+
   /// Cancels the task.
   ///
   /// See [NSURLSessionTask cancel](https://developer.apple.com/documentation/foundation/nsurlsessiontask/1411591-cancel)
@@ -1664,5 +1665,35 @@ class URLSession extends _ObjectHolder<ncb.NSURLSession> {
         onWebSocketTaskOpened: _onWebSocketTaskOpened,
         onWebSocketTaskClosed: _onWebSocketTaskClosed);
     return task;
+  }
+
+  Future<List<URLSessionTask>> getAllTasks() {
+      final completer = Completer<List<URLSessionTask>>();
+    final completionPort = ReceivePort();
+
+    completionPort.listen((message) {
+      final resultsRaw = ncb.NSArray.castFromPointer(linkedLibs, Pointer<ncb.ObjCObject>.fromAddress(message as int),
+              retain: true, release: true
+          );
+      final List<URLSessionTask> output = [];
+      final int count = resultsRaw.count;
+      for (var i = 0; i < count; i++) {
+        var item = resultsRaw.objectAtIndex_(i);
+        output.add(
+          URLSessionTask._(
+              ncb.NSURLSessionTask.castFrom(item)
+          )
+        );
+      }
+      completer.complete(output);
+      completionPort.close();
+
+
+
+    });
+
+    helperLibs.CUPHTTPURLSessionGetAllTasks(_nsObject,
+        completionPort.sendPort.nativePort);
+    return completer.future;
   }
 }
