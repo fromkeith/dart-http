@@ -61,7 +61,7 @@ willPerformHTTPRedirection:(NSHTTPURLResponse *)response
         newRequest:(NSURLRequest *)request
  completionHandler:(void (^)(NSURLRequest *))completionHandler {
   CUPHTTPTaskConfiguration *config = [taskConfigurations objectForKey:task];
-  if (config == null) {
+  if (config == nil) {
       // if we resume a session we can still get this fired.
       // lets not crash
       return;
@@ -98,7 +98,7 @@ didReceiveResponse:(NSURLResponse *)response
  completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler
 {
   CUPHTTPTaskConfiguration *config = [taskConfigurations objectForKey:task];
-  if (config == null) {
+  if (config == nil) {
       // if we resume a session we can still get this fired.
       // lets not crash
       return;
@@ -136,7 +136,7 @@ didReceiveResponse:(NSURLResponse *)response
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)task
     didReceiveData:(NSData *)data {
   CUPHTTPTaskConfiguration *config = [taskConfigurations objectForKey:task];
-  if (config == null) {
+  if (config == nil) {
       // if we resume a session we can still get this fired.
       // lets not crash
       return;
@@ -171,7 +171,7 @@ didReceiveResponse:(NSURLResponse *)response
       downloadTask:(NSURLSessionDownloadTask *)downloadTask
 didFinishDownloadingToURL:(NSURL *)location {
   CUPHTTPTaskConfiguration *config = [taskConfigurations objectForKey:downloadTask];
-  if (config == null) {
+  if (config == nil) {
       // if we resume a session we can still get this fired.
       // lets not crash
       return;
@@ -242,7 +242,7 @@ didCompleteWithError:(nullable NSError *)error {
      webSocketTask:(NSURLSessionWebSocketTask *)task
 didOpenWithProtocol:(nullable NSString *)protocol {
   CUPHTTPTaskConfiguration *config = [taskConfigurations objectForKey:task];
-  if (config == null) {
+  if (config == nil) {
       // if we resume a session we can still get this fired.
       // lets not crash
       return;
@@ -275,7 +275,7 @@ didOpenWithProtocol:(nullable NSString *)protocol {
   didCloseWithCode:(NSURLSessionWebSocketCloseCode)closeCode
             reason:(nullable NSData *)reason {
   CUPHTTPTaskConfiguration *config = [taskConfigurations objectForKey:task];
-  if (config == null) {
+  if (config == nil) {
       // if we resume a session we can still get this fired.
       // lets not crash
       return;
@@ -311,7 +311,7 @@ didOpenWithProtocol:(nullable NSString *)protocol {
     totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
 
     CUPHTTPTaskConfiguration *config = [taskConfigurations objectForKey:task];
-    if (config == null) {
+    if (config == nil) {
       // if we resume a session we can still get this fired.
       // lets not crash
       return;
