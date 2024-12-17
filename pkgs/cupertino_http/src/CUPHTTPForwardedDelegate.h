@@ -128,3 +128,14 @@
 @property (nullable, readonly) NSData* reason;
 
 @end
+
+@interface CUPHTTPForwardedDidSendBody : CUPHTTPForwardedDelegate
+- (id) initWithSession:(NSURLSession *)session
+        task:(NSURLSessionTask *) task
+             bytesSent:(int64_t)bytesSent
+    totalBytesSent:(int64_t)totalBytesSent
+    totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend;
+@property (readonly) int64_t bytesSent;
+@property (readonly) int64_t totalBytesSent;
+@property (readonly) int64_t totalBytesExpectedToSend;
+@end

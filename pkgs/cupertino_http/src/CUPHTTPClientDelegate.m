@@ -275,4 +275,42 @@ didOpenWithProtocol:(nullable NSString *)protocol {
 }
 
 
+- (void)URLSession:(NSURLSession *)session
+              task:(NSURLSessionTask *)task
+    didSendBodyData:(int64_t)bytesSent
+    totalBytesSent:(int64_t)totalBytesSent
+    totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
+
+    CUPHTTPTaskConfiguration *config = [taskConfigurations objectForKey:task];
+    NSAssert(config != nil, @"No configuration for task.");
+
+    CUPHTTPForwardedDidSendBody *forwardedData = [[CUPHTTPForwardedDidSendBody alloc]
+                                         initWithSession:session task:task
+                                               bytesSent:bytesSent
+                                          totalBytesSent:totalBytesSent
+                                totalBytesExpectedToSend:totalBytesExpectedToSend
+                                        ]
+  ;
+
+    Dart_CObject ctype = MessageTypeToCObject(DidSendBodyMessage);
+  Dart_CObject cReceiveData = NSObjectToCObject(forwardedData);
+  Dart_CObject* message_carray[] = { &ctype, &cReceiveData };
+
+  Dart_CObject message_cobj;
+  message_cobj.type = Dart_CObject_kArray;
+  message_cobj.value.as_array.length = 2;
+  message_cobj.value.as_array.values = message_carray;
+
+  [forwardedData.lock lock];  // After this line, any attempt to acquire the lock will wait.
+  const bool success = Dart_PostCObject_DL(config.sendPort, &message_cobj);
+  NSAssert(success, @"Dart_PostCObject_DL failed.");
+
+
+  [forwardedData.lock lock];
+  [forwardedData release];
+
+}
+
+
+
 @end

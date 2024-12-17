@@ -181,3 +181,26 @@
 
 @end
 
+@implementation CUPHTTPForwardedDidSendBody
+
+- (id) initWithSession:(NSURLSession *)session
+         task:(NSURLSessionTask *)task
+                  bytesSent:(int64_t)bytesSent
+    totalBytesSent:(int64_t)totalBytesSent
+    totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
+
+  self = [super initWithSession: session task: task];
+  if (self != nil) {
+      self->_bytesSent = bytesSent;
+      self->_totalBytesSent = totalBytesSent;
+      self->_totalBytesExpectedToSend = totalBytesExpectedToSend;
+  }
+  return self;
+}
+
+- (void) dealloc {
+  [super dealloc];
+}
+
+
+@end

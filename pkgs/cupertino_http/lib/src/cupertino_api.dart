@@ -1141,6 +1141,8 @@ void _setupDelegation(
           URLSession session, URLSessionTask task, URLResponse response)?
       onResponse,
   void Function(URLSession session, URLSessionTask task, Data error)? onData,
+      void Function(URLSession session, URLSessionTask task, int bytesSent,
+          int totalBytesSent, int totalBytesExpectedToSend)? onDidSendBody,
   void Function(URLSession session, URLSessionDownloadTask task, Uri uri)?
       onFinishedDownloading,
   void Function(URLSession session, URLSessionTask task, Error? error)?
@@ -1229,6 +1231,19 @@ void _setupDelegation(
             // TODO(https://github.com/dart-lang/ffigen/issues/386): Package
             // this exception as an `Error` and call the completion function
             // with it.
+          }
+        } finally {
+          forwardedData.finish();
+        }
+        break;
+      case ncb.MessageType.DidSendBodyMessage:
+        final forwardedData =
+            ncb.CUPHTTPForwardedDidSendBody.castFrom(forwardedDelegate);
+        try {
+          if (onDidSendBody != null) {
+            onDidSendBody(session, task, forwardedData.bytesSent,
+                forwardedData.totalBytesSent,
+                forwardedData.totalBytesExpectedToSend);
           }
         } finally {
           forwardedData.finish();
@@ -1352,6 +1367,8 @@ class URLSession extends _ObjectHolder<ncb.NSURLSession> {
       _onResponse;
   final void Function(URLSession session, URLSessionTask task, Data error)?
       _onData;
+  final void Function(URLSession session, URLSessionTask task, int bytesSent,
+        int totalBytesSent, int totalBytesExpectedToSend)? _onDidSendBody;
   final void Function(URLSession session, URLSessionTask task, Error? error)?
       _onComplete;
   final void Function(URLSession session, URLSessionDownloadTask task, Uri uri)?
@@ -1372,6 +1389,8 @@ class URLSession extends _ObjectHolder<ncb.NSURLSession> {
             URLSession session, URLSessionTask task, URLResponse response)?
         onResponse,
     void Function(URLSession session, URLSessionTask task, Data error)? onData,
+        void Function(URLSession session, URLSessionTask task, int bytesSent,
+        int totalBytesSent, int totalBytesExpectedToSend)? onDidSendBody,
     void Function(URLSession session, URLSessionDownloadTask task, Uri uri)?
         onFinishedDownloading,
     void Function(URLSession session, URLSessionTask task, Error? error)?
@@ -1386,6 +1405,7 @@ class URLSession extends _ObjectHolder<ncb.NSURLSession> {
         _onRedirect = onRedirect,
         _onResponse = onResponse,
         _onData = onData,
+        _onDidSendBody = onDidSendBody,
         _onFinishedDownloading = onFinishedDownloading,
         _onComplete = onComplete,
         _onWebSocketTaskOpened = onWebSocketTaskOpened,
@@ -1445,6 +1465,8 @@ class URLSession extends _ObjectHolder<ncb.NSURLSession> {
             URLSession session, URLSessionTask task, URLResponse response)?
         onResponse,
     void Function(URLSession session, URLSessionTask task, Data error)? onData,
+    void Function(URLSession session, URLSessionTask task, int bytesSent,
+        int totalBytesSent, int totalBytesExpectedToSend)? onDidSendBody,
     void Function(URLSession session, URLSessionDownloadTask task, Uri uri)?
         onFinishedDownloading,
     void Function(URLSession session, URLSessionTask task, Error? error)?
@@ -1474,6 +1496,7 @@ class URLSession extends _ObjectHolder<ncb.NSURLSession> {
         onRedirect: onRedirect,
         onResponse: onResponse,
         onData: onData,
+        onDidSendBody: onDidSendBody,
         onFinishedDownloading: onFinishedDownloading,
         onComplete: onComplete,
         onWebSocketTaskOpened: onWebSocketTaskOpened,
@@ -1505,6 +1528,7 @@ class URLSession extends _ObjectHolder<ncb.NSURLSession> {
     _setupDelegation(_delegate, this, task,
         onComplete: _onComplete,
         onData: _onData,
+        onDidSendBody: _onDidSendBody,
         onFinishedDownloading: _onFinishedDownloading,
         onRedirect: _onRedirect,
         onResponse: _onResponse);
@@ -1565,6 +1589,7 @@ class URLSession extends _ObjectHolder<ncb.NSURLSession> {
     _setupDelegation(_delegate, this, task,
         onComplete: _onComplete,
         onData: _onData,
+        onDidSendBody: _onDidSendBody,
         onFinishedDownloading: _onFinishedDownloading,
         onRedirect: _onRedirect,
         onResponse: _onResponse);
@@ -1585,6 +1610,7 @@ class URLSession extends _ObjectHolder<ncb.NSURLSession> {
     _setupDelegation(_delegate, this, task,
         onComplete: _onComplete,
         onData: _onData,
+        onDidSendBody: _onDidSendBody,
         onFinishedDownloading: _onFinishedDownloading,
         onRedirect: _onRedirect,
         onResponse: _onResponse,

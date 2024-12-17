@@ -59521,6 +59521,56 @@ class NativeCupertinoHttp {
           int,
           ffi.Pointer<ObjCObject>)>();
 
+  late final _class_CUPHTTPForwardedDidSendBody1 =
+      _getClass1("CUPHTTPForwardedDidSendBody");
+  late final _sel_initWithSession_task_bytesSent_totalBytesSent_totalBytesExpectedToSend_1 =
+      _registerName1(
+          "initWithSession:task:bytesSent:totalBytesSent:totalBytesExpectedToSend:");
+  ffi.Pointer<ObjCObject> _objc_msgSend_547(
+    ffi.Pointer<ObjCObject> obj,
+    ffi.Pointer<ObjCSel> sel,
+    ffi.Pointer<ObjCObject> session,
+    ffi.Pointer<ObjCObject> task,
+    int bytesSent,
+    int totalBytesSent,
+    int totalBytesExpectedToSend,
+  ) {
+    return __objc_msgSend_547(
+      obj,
+      sel,
+      session,
+      task,
+      bytesSent,
+      totalBytesSent,
+      totalBytesExpectedToSend,
+    );
+  }
+
+  late final __objc_msgSend_547Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ObjCObject> Function(
+              ffi.Pointer<ObjCObject>,
+              ffi.Pointer<ObjCSel>,
+              ffi.Pointer<ObjCObject>,
+              ffi.Pointer<ObjCObject>,
+              ffi.Int64,
+              ffi.Int64,
+              ffi.Int64)>>('objc_msgSend');
+  late final __objc_msgSend_547 = __objc_msgSend_547Ptr.asFunction<
+      ffi.Pointer<ObjCObject> Function(
+          ffi.Pointer<ObjCObject>,
+          ffi.Pointer<ObjCSel>,
+          ffi.Pointer<ObjCObject>,
+          ffi.Pointer<ObjCObject>,
+          int,
+          int,
+          int)>();
+
+  late final _sel_bytesSent1 = _registerName1("bytesSent");
+  late final _sel_totalBytesSent1 = _registerName1("totalBytesSent");
+  late final _sel_totalBytesExpectedToSend1 =
+      _registerName1("totalBytesExpectedToSend");
+
   /// Creates a `Dart_CObject` containing the given `NSObject` pointer as an int.
   Dart_CObject NSObjectToCObject(
     NSObject n,
@@ -59840,45 +59890,45 @@ class NativeCupertinoHttp {
   late final _class_CUPHTTPStreamToNSInputStreamAdapter1 =
       _getClass1("CUPHTTPStreamToNSInputStreamAdapter");
   late final _sel_addData_1 = _registerName1("addData:");
-  int _objc_msgSend_547(
+  int _objc_msgSend_548(
     ffi.Pointer<ObjCObject> obj,
     ffi.Pointer<ObjCSel> sel,
     ffi.Pointer<ObjCObject> data,
   ) {
-    return __objc_msgSend_547(
+    return __objc_msgSend_548(
       obj,
       sel,
       data,
     );
   }
 
-  late final __objc_msgSend_547Ptr = _lookup<
+  late final __objc_msgSend_548Ptr = _lookup<
       ffi.NativeFunction<
           NSUInteger Function(ffi.Pointer<ObjCObject>, ffi.Pointer<ObjCSel>,
               ffi.Pointer<ObjCObject>)>>('objc_msgSend');
-  late final __objc_msgSend_547 = __objc_msgSend_547Ptr.asFunction<
+  late final __objc_msgSend_548 = __objc_msgSend_548Ptr.asFunction<
       int Function(ffi.Pointer<ObjCObject>, ffi.Pointer<ObjCSel>,
           ffi.Pointer<ObjCObject>)>();
 
   late final _sel_setDone1 = _registerName1("setDone");
   late final _sel_setError_1 = _registerName1("setError:");
-  void _objc_msgSend_548(
+  void _objc_msgSend_549(
     ffi.Pointer<ObjCObject> obj,
     ffi.Pointer<ObjCSel> sel,
     ffi.Pointer<ObjCObject> error,
   ) {
-    return __objc_msgSend_548(
+    return __objc_msgSend_549(
       obj,
       sel,
       error,
     );
   }
 
-  late final __objc_msgSend_548Ptr = _lookup<
+  late final __objc_msgSend_549Ptr = _lookup<
       ffi.NativeFunction<
           ffi.Void Function(ffi.Pointer<ObjCObject>, ffi.Pointer<ObjCSel>,
               ffi.Pointer<ObjCObject>)>>('objc_msgSend');
-  late final __objc_msgSend_548 = __objc_msgSend_548Ptr.asFunction<
+  late final __objc_msgSend_549 = __objc_msgSend_549Ptr.asFunction<
       void Function(ffi.Pointer<ObjCObject>, ffi.Pointer<ObjCSel>,
           ffi.Pointer<ObjCObject>)>();
 }
@@ -90920,6 +90970,7 @@ abstract class MessageType {
   static const int FinishedDownloading = 4;
   static const int WebSocketOpened = 5;
   static const int WebSocketClosed = 6;
+  static const int DidSendBodyMessage = 7;
 }
 
 /// The configuration associated with a NSURLSessionTask.
@@ -91709,6 +91760,92 @@ class CUPHTTPForwardedWebSocketClosed extends CUPHTTPForwardedDelegate {
   }
 }
 
+class CUPHTTPForwardedDidSendBody extends CUPHTTPForwardedDelegate {
+  CUPHTTPForwardedDidSendBody._(
+      ffi.Pointer<ObjCObject> id, NativeCupertinoHttp lib,
+      {bool retain = false, bool release = false})
+      : super._(id, lib, retain: retain, release: release);
+
+  /// Returns a [CUPHTTPForwardedDidSendBody] that points to the same underlying object as [other].
+  static CUPHTTPForwardedDidSendBody castFrom<T extends _ObjCWrapper>(T other) {
+    return CUPHTTPForwardedDidSendBody._(other._id, other._lib,
+        retain: true, release: true);
+  }
+
+  /// Returns a [CUPHTTPForwardedDidSendBody] that wraps the given raw object pointer.
+  static CUPHTTPForwardedDidSendBody castFromPointer(
+      NativeCupertinoHttp lib, ffi.Pointer<ObjCObject> other,
+      {bool retain = false, bool release = false}) {
+    return CUPHTTPForwardedDidSendBody._(other, lib,
+        retain: retain, release: release);
+  }
+
+  /// Returns whether [obj] is an instance of [CUPHTTPForwardedDidSendBody].
+  static bool isInstance(_ObjCWrapper obj) {
+    return obj._lib._objc_msgSend_0(obj._id, obj._lib._sel_isKindOfClass_1,
+        obj._lib._class_CUPHTTPForwardedDidSendBody1);
+  }
+
+  NSObject
+      initWithSession_task_bytesSent_totalBytesSent_totalBytesExpectedToSend_(
+          NSURLSession session,
+          NSURLSessionTask task,
+          int bytesSent,
+          int totalBytesSent,
+          int totalBytesExpectedToSend) {
+    final _ret = _lib._objc_msgSend_547(
+        _id,
+        _lib._sel_initWithSession_task_bytesSent_totalBytesSent_totalBytesExpectedToSend_1,
+        session._id,
+        task._id,
+        bytesSent,
+        totalBytesSent,
+        totalBytesExpectedToSend);
+    return NSObject._(_ret, _lib, retain: true, release: true);
+  }
+
+  int get bytesSent {
+    return _lib._objc_msgSend_380(_id, _lib._sel_bytesSent1);
+  }
+
+  int get totalBytesSent {
+    return _lib._objc_msgSend_380(_id, _lib._sel_totalBytesSent1);
+  }
+
+  int get totalBytesExpectedToSend {
+    return _lib._objc_msgSend_380(_id, _lib._sel_totalBytesExpectedToSend1);
+  }
+
+  @override
+  CUPHTTPForwardedDidSendBody init() {
+    final _ret = _lib._objc_msgSend_2(_id, _lib._sel_init1);
+    return CUPHTTPForwardedDidSendBody._(_ret, _lib,
+        retain: true, release: true);
+  }
+
+  static CUPHTTPForwardedDidSendBody new1(NativeCupertinoHttp _lib) {
+    final _ret = _lib._objc_msgSend_2(
+        _lib._class_CUPHTTPForwardedDidSendBody1, _lib._sel_new1);
+    return CUPHTTPForwardedDidSendBody._(_ret, _lib,
+        retain: false, release: true);
+  }
+
+  static CUPHTTPForwardedDidSendBody allocWithZone_(
+      NativeCupertinoHttp _lib, ffi.Pointer<_NSZone> zone) {
+    final _ret = _lib._objc_msgSend_3(_lib._class_CUPHTTPForwardedDidSendBody1,
+        _lib._sel_allocWithZone_1, zone);
+    return CUPHTTPForwardedDidSendBody._(_ret, _lib,
+        retain: false, release: true);
+  }
+
+  static CUPHTTPForwardedDidSendBody alloc(NativeCupertinoHttp _lib) {
+    final _ret = _lib._objc_msgSend_2(
+        _lib._class_CUPHTTPForwardedDidSendBody1, _lib._sel_alloc1);
+    return CUPHTTPForwardedDidSendBody._(_ret, _lib,
+        retain: false, release: true);
+  }
+}
+
 abstract class NSStreamEvent {
   static const int NSStreamEventNone = 0;
   static const int NSStreamEventOpenCompleted = 1;
@@ -91765,7 +91902,7 @@ class CUPHTTPStreamToNSInputStreamAdapter extends NSInputStream {
   }
 
   DartNSUInteger addData_(NSData data) {
-    return _lib._objc_msgSend_547(_id, _lib._sel_addData_1, data._id);
+    return _lib._objc_msgSend_548(_id, _lib._sel_addData_1, data._id);
   }
 
   void setDone() {
@@ -91773,7 +91910,7 @@ class CUPHTTPStreamToNSInputStreamAdapter extends NSInputStream {
   }
 
   void setError_(NSError error) {
-    _lib._objc_msgSend_548(_id, _lib._sel_setError_1, error._id);
+    _lib._objc_msgSend_549(_id, _lib._sel_setError_1, error._id);
   }
 
   @override
