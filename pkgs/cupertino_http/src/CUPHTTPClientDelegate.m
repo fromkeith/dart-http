@@ -187,6 +187,12 @@ didFinishDownloadingToURL:(NSURL *)location {
               task:(NSURLSessionTask *)task
 didCompleteWithError:(nullable NSError *)error {
   CUPHTTPTaskConfiguration *config = [taskConfigurations objectForKey:task];
+  if (config == nil) {
+      // this can happen if we resume the app after it was manually killed
+      // then resumed.. a better behaviour would be to register a fallback
+      // so we can at least get notified about this task failing or succeeding.
+      return;
+  }
   NSAssert(config != nil, @"No configuration for task.");
   
   CUPHTTPForwardedComplete *forwardedComplete = [[CUPHTTPForwardedComplete alloc]
