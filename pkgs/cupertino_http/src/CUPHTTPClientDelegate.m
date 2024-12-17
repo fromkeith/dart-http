@@ -61,7 +61,11 @@ willPerformHTTPRedirection:(NSHTTPURLResponse *)response
         newRequest:(NSURLRequest *)request
  completionHandler:(void (^)(NSURLRequest *))completionHandler {
   CUPHTTPTaskConfiguration *config = [taskConfigurations objectForKey:task];
-  NSAssert(config != nil, @"No configuration for task.");
+  if (config == null) {
+      // if we resume a session we can still get this fired.
+      // lets not crash
+      return;
+  }
 
   CUPHTTPForwardedRedirect *forwardedRedirect = [[CUPHTTPForwardedRedirect alloc]
                                                  initWithSession:session task:task
@@ -94,7 +98,11 @@ didReceiveResponse:(NSURLResponse *)response
  completionHandler:(void (^)(NSURLSessionResponseDisposition disposition))completionHandler
 {
   CUPHTTPTaskConfiguration *config = [taskConfigurations objectForKey:task];
-  NSAssert(config != nil, @"No configuration for task.");
+  if (config == null) {
+      // if we resume a session we can still get this fired.
+      // lets not crash
+      return;
+  }
   
   CUPHTTPForwardedResponse *forwardedResponse = [[CUPHTTPForwardedResponse alloc]
                                                  initWithSession:session
@@ -128,7 +136,11 @@ didReceiveResponse:(NSURLResponse *)response
 - (void)URLSession:(NSURLSession *)session dataTask:(NSURLSessionDataTask *)task
     didReceiveData:(NSData *)data {
   CUPHTTPTaskConfiguration *config = [taskConfigurations objectForKey:task];
-  NSAssert(config != nil, @"No configuration for task.");
+  if (config == null) {
+      // if we resume a session we can still get this fired.
+      // lets not crash
+      return;
+  }
   
   CUPHTTPForwardedData *forwardedData = [[CUPHTTPForwardedData alloc]
                                          initWithSession:session task:task data: data]
@@ -159,7 +171,11 @@ didReceiveResponse:(NSURLResponse *)response
       downloadTask:(NSURLSessionDownloadTask *)downloadTask
 didFinishDownloadingToURL:(NSURL *)location {
   CUPHTTPTaskConfiguration *config = [taskConfigurations objectForKey:downloadTask];
-  NSAssert(config != nil, @"No configuration for task.");
+  if (config == null) {
+      // if we resume a session we can still get this fired.
+      // lets not crash
+      return;
+  }
   
   CUPHTTPForwardedFinishedDownloading *forwardedFinishedDownload = [
     [CUPHTTPForwardedFinishedDownloading alloc]
@@ -193,7 +209,6 @@ didCompleteWithError:(nullable NSError *)error {
       // so we can at least get notified about this task failing or succeeding.
       return;
   }
-  NSAssert(config != nil, @"No configuration for task.");
   
   CUPHTTPForwardedComplete *forwardedComplete = [[CUPHTTPForwardedComplete alloc]
                                                  initWithSession:session task:task error: error];
@@ -227,7 +242,11 @@ didCompleteWithError:(nullable NSError *)error {
      webSocketTask:(NSURLSessionWebSocketTask *)task
 didOpenWithProtocol:(nullable NSString *)protocol {
   CUPHTTPTaskConfiguration *config = [taskConfigurations objectForKey:task];
-  NSAssert(config != nil, @"No configuration for task.");
+  if (config == null) {
+      // if we resume a session we can still get this fired.
+      // lets not crash
+      return;
+  }
   
   CUPHTTPForwardedWebSocketOpened *opened = [[CUPHTTPForwardedWebSocketOpened alloc]
                                              initWithSession:session webSocketTask:task
@@ -256,7 +275,11 @@ didOpenWithProtocol:(nullable NSString *)protocol {
   didCloseWithCode:(NSURLSessionWebSocketCloseCode)closeCode
             reason:(nullable NSData *)reason {
   CUPHTTPTaskConfiguration *config = [taskConfigurations objectForKey:task];
-  NSAssert(config != nil, @"No configuration for task.");
+  if (config == null) {
+      // if we resume a session we can still get this fired.
+      // lets not crash
+      return;
+  }
   
   CUPHTTPForwardedWebSocketClosed *closed = [[CUPHTTPForwardedWebSocketClosed alloc]
                                              initWithSession:session webSocketTask:task
@@ -288,7 +311,11 @@ didOpenWithProtocol:(nullable NSString *)protocol {
     totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend {
 
     CUPHTTPTaskConfiguration *config = [taskConfigurations objectForKey:task];
-    NSAssert(config != nil, @"No configuration for task.");
+    if (config == null) {
+      // if we resume a session we can still get this fired.
+      // lets not crash
+      return;
+  }
 
     CUPHTTPForwardedDidSendBody *forwardedData = [[CUPHTTPForwardedDidSendBody alloc]
                                          initWithSession:session task:task
